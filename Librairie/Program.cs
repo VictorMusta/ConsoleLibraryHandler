@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Xml.Serialization;
+    
+[Serializable]
 class Librairie
 {
     static List<Livre> bibliotheque = new List<Livre>();
 
     static void Main(string[] args)
     {
+        ChargerBibliotheque();
+
         bool continuer = true;
         while (continuer)
         {
@@ -24,6 +28,7 @@ class Librairie
                     RechercherLivre();
                     break;
                 case "4":
+                    SauvegarderBibliotheque();
                     continuer = false;
                     break;
                 default:
@@ -89,6 +94,30 @@ class Librairie
             {
                 Console.WriteLine(livre);
             }
+        }
+    }
+    
+    static void SauvegarderBibliotheque()
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(List<Livre>));
+        using (TextWriter writer = new StreamWriter("bibliotheque.xml"))
+        {
+            serializer.Serialize(writer, bibliotheque);
+        }
+        Console.WriteLine("Bibliothèque sauvegardée avec succès.");
+        Console.WriteLine($"Le fichier a été sauvegardé à : {Path.GetFullPath("bibliotheque.xml")}");
+    }
+
+    static void ChargerBibliotheque()
+    {
+        if (File.Exists("bibliotheque.xml"))
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Livre>));
+            using (TextReader reader = new StreamReader("bibliotheque.xml"))
+            {
+                bibliotheque = (List<Livre>)serializer.Deserialize(reader);
+            }
+            Console.WriteLine("Bibliothèque chargée avec succès.");
         }
     }
 }

@@ -11,6 +11,8 @@ public class Livre
         ISBN = isbn;
     }
 
+    public Livre() { } // Constructeur sans paramètres nécessaire pour la sérialisation
+    
     public override string ToString()
     {
         return $"{Titre} par {Auteur} (ISBN: {ISBN})";
