@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-    
-[Serializable]
+
 class Librairie
 {
     static List<Livre> bibliotheque = new List<Livre>();
@@ -28,6 +27,9 @@ class Librairie
                     RechercherLivre();
                     break;
                 case "4":
+                    SupprimerLivre();
+                    break;
+                case "5":
                     SauvegarderBibliotheque();
                     continuer = false;
                     break;
@@ -40,11 +42,12 @@ class Librairie
 
     static void AfficherMenu()
     {
-        Console.WriteLine("\nGestion de Librairie");
+        Console.WriteLine("\nMenu :");
         Console.WriteLine("1. Ajouter un livre");
         Console.WriteLine("2. Afficher tous les livres");
         Console.WriteLine("3. Rechercher un livre");
-        Console.WriteLine("4. Quitter");
+        Console.WriteLine("4. Supprimer un livre");
+        Console.WriteLine("5. Quitter et sauvegarder");
         Console.Write("Choisissez une option : ");
     }
 
@@ -59,6 +62,23 @@ class Librairie
 
         bibliotheque.Add(new Livre(titre, auteur, isbn));
         Console.WriteLine("Livre ajouté avec succès !");
+    }
+    
+    static void SupprimerLivre()
+    {
+        Console.WriteLine("Entrez l'ISBN du livre à supprimer :");
+        string isbn = Console.ReadLine();
+    
+        Livre livreASupprimer = bibliotheque.Find(l => l.ISBN == isbn);
+        if (livreASupprimer != null)
+        {
+            bibliotheque.Remove(livreASupprimer);
+            Console.WriteLine("Le livre a été supprimé avec succès.");
+        }
+        else
+        {
+            Console.WriteLine("Aucun livre trouvé avec cet ISBN.");
+        }
     }
 
     static void AfficherLivres()
